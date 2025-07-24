@@ -36,7 +36,6 @@ import org.jabref.model.metadata.SaveOrder;
 import com.airhacks.afterburner.injection.Injector;
 import org.mockito.Answers;
 import org.openjdk.jmh.Main;
-import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
@@ -44,7 +43,7 @@ import org.openjdk.jmh.annotations.State;
 import static org.mockito.Mockito.mock;
 
 @State(Scope.Thread)
-public class Benchmarks {
+public class Benchmark {
 
     private String bibtexString;
     private final BibDatabase database = new BibDatabase();
@@ -92,54 +91,54 @@ public class Benchmarks {
         return outputWriter;
     }
 
-    @Benchmark
+    @org.openjdk.jmh.annotations.Benchmark
     public ParserResult parse() throws IOException {
         CliPreferences preferences = Injector.instantiateModelOrService(CliPreferences.class);
         BibtexParser parser = new BibtexParser(preferences.getImportFormatPreferences());
         return parser.parse(new StringReader(bibtexString));
     }
 
-    @Benchmark
+    @org.openjdk.jmh.annotations.Benchmark
     public String write() throws IOException {
         return getOutputWriter().toString();
     }
 
-    @Benchmark
+    @org.openjdk.jmh.annotations.Benchmark
     public List<BibEntry> search() {
         // TODO: Create Benchmark for LuceneSearch
         return List.of();
     }
 
-    @Benchmark
+    @org.openjdk.jmh.annotations.Benchmark
     public List<BibEntry> index() {
         // TODO: Create Benchmark for LuceneIndexer
         return List.of();
     }
 
-    @Benchmark
+    @org.openjdk.jmh.annotations.Benchmark
     public BibDatabaseMode inferBibDatabaseMode() {
         return BibDatabaseModeDetection.inferMode(database);
     }
 
-    @Benchmark
+    @org.openjdk.jmh.annotations.Benchmark
     public String latexToUnicodeConversion() {
         LatexToUnicodeFormatter f = new LatexToUnicodeFormatter();
         return f.format(latexConversionString);
     }
 
-    @Benchmark
+    @org.openjdk.jmh.annotations.Benchmark
     public String latexToHTMLConversion() {
         HTMLChars f = new HTMLChars();
         return f.format(latexConversionString);
     }
 
-    @Benchmark
+    @org.openjdk.jmh.annotations.Benchmark
     public String htmlToLatexConversion() {
         HtmlToLatexFormatter f = new HtmlToLatexFormatter();
         return f.format(htmlConversionString);
     }
 
-    @Benchmark
+    @org.openjdk.jmh.annotations.Benchmark
     public boolean keywordGroupContains() {
         KeywordGroup group = new WordKeywordGroup("testGroup", GroupHierarchyType.INDEPENDENT, StandardField.KEYWORDS, "testkeyword", false, ',', false);
         return group.containsAll(database.getEntries());
